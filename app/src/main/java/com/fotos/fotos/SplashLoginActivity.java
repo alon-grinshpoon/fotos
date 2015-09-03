@@ -2,22 +2,17 @@ package com.fotos.fotos;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -81,20 +76,6 @@ public class SplashLoginActivity extends Activity {
 
 
         updateWithToken(AccessToken.getCurrentAccessToken());
-
-
-
-        /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
-//        new Handler().postDelayed(new Runnable(){
-//            @Override
-//            public void run() {
-//               /* Create an Intent that will start the Menu-Activity. */
-//               Intent mainIntent = new Intent(SplashLoginActivity.this,MainActivity.class);
-//               SplashLoginActivity.this.startActivity(mainIntent);
-//               SplashLoginActivity.this.finish();
-//           }
-//        }, SPLASH_DISPLAY_LENGTH);
     }
 
     @Override

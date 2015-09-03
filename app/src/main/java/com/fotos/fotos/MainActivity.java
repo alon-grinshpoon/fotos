@@ -2,6 +2,7 @@ package com.fotos.fotos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
 
+    // :(
+    private static Context context;
+
     private FacebookData fbAccess = new FacebookData();
     // Holds friend list
     private List<Friend> friendList = null;
@@ -76,6 +81,9 @@ public class MainActivity extends AppCompatActivity
         //ParseObject testObject = new ParseObject("mayabs");
         // testObject.put("facebookkkkid", "maya052");
         //testObject.saveInBackground();
+
+        // :( X 3
+        context = getApplicationContext();
 
 
         // color notification bar
@@ -233,6 +241,9 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    String answered_direction = (direction == ItemTouchHelper.LEFT) ? "left" : "right";
+                    Toast.makeText(getCustomAppContext(), String.format("You answered %s, seriously? better luck next time.", answered_direction),
+                            Toast.LENGTH_SHORT).show();
                     adapter.remove(viewHolder.getAdapterPosition());
                     adapter.onDetachedFromRecyclerView(cardViewer);
                 }
@@ -260,6 +271,10 @@ public class MainActivity extends AppCompatActivity
             cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "FIND TICKETS TOO!", "option2", true, "sponsor"));
             cards.add(new Card(R.drawable.louvre, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor"));
             return cards;
+        }
+
+        public static Context getCustomAppContext(){
+            return context;
         }
     }
 }

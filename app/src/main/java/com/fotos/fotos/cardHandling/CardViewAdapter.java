@@ -2,6 +2,7 @@ package com.fotos.fotos.cardHandling;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -70,6 +71,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         cardViewHolder.image.setImageBitmap(imageBitmap);
         // set name
         cardViewHolder.name.setText("By " + cards.get(i).name);
+        Typeface type = Typeface.createFromAsset(cardViewHolder.cardView.getContext().getAssets(), "fonts/Roboto-Thin.ttf");
+        cardViewHolder.name.setTypeface(type);
         // set question
         cardViewHolder.question.setText(cards.get(i).question);
         // set option1

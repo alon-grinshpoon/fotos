@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.widget.LoginButton;
+
 public class SplashLoginActivity extends Activity {
 
     /** Duration of wait **/
@@ -17,23 +20,28 @@ public class SplashLoginActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+        // Init FB SDK, must do this before anything else
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         // remove title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         setContentView(R.layout.splashlogin);
+
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashLoginActivity.this,MainActivity.class);
-                SplashLoginActivity.this.startActivity(mainIntent);
-                SplashLoginActivity.this.finish();
-            }
+               /* Create an Intent that will start the Menu-Activity. */
+               Intent mainIntent = new Intent(SplashLoginActivity.this,MainActivity.class);
+               SplashLoginActivity.this.startActivity(mainIntent);
+               SplashLoginActivity.this.finish();
+           }
         }, SPLASH_DISPLAY_LENGTH);
     }
 }

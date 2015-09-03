@@ -2,12 +2,9 @@ package com.fotos.fotos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-<<<<<<< HEAD
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-=======
 import android.content.Context;
->>>>>>> c53958d7ef2c7a7616408f0cce862a741cef47e9
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -28,24 +25,15 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import android.view.Window;
 import android.view.WindowManager;
-<<<<<<< HEAD
-import android.widget.ImageView;
-=======
 import android.widget.Toast;
->>>>>>> c53958d7ef2c7a7616408f0cce862a741cef47e9
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.fotos.fotos.cardHandling.Card;
 import com.fotos.fotos.cardHandling.CardViewAdapter;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;

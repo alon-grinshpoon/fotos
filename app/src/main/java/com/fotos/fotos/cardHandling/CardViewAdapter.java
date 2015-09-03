@@ -1,5 +1,7 @@
 package com.fotos.fotos.cardHandling;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fotos.fotos.R;
 
@@ -29,6 +32,9 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         TextView option2;
         TextView sponsored;
         ImageView sponsorLogo;
+        TextView shareFoto;
+        TextView likeFoto;
+        TextView commentFoto;
 
         CardViewHolder(View itemView) {
             super(itemView);
@@ -40,6 +46,9 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
             option2  = (TextView)itemView.findViewById(R.id.card_option2);
             sponsored = (TextView)itemView.findViewById(R.id.card_sponsored);
             sponsorLogo  = (ImageView)itemView.findViewById(R.id.card_sponsorLogo);
+            shareFoto = (TextView)itemView.findViewById(R.id.card_share);
+            likeFoto = (TextView)itemView.findViewById(R.id.card_like);
+            commentFoto = (TextView)itemView.findViewById(R.id.card_comment);
         }
     }
 
@@ -105,6 +114,43 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
                 cardViewHolder.sponsorLogo.setVisibility(View.VISIBLE);
             }
         }
+        // Like/Comment/Share
+        cardViewHolder.shareFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "foto shared :)",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cardViewHolder.likeFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "foto liked :)",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cardViewHolder.commentFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(v.getContext())
+                        .setTitle("Comment")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -120,5 +166,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
     public void remove(int position) {
         cards.remove(position);
         notifyItemRemoved(position);
+    }
+
+    // Adds card to the bottom.
+    public void add_card(Card card) {
+        cards.add(card);
+        notifyItemInserted(cards.size() - 1);
     }
 }

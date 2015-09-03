@@ -1,5 +1,6 @@
 package com.fotos.fotos;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,10 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+//import com.Parse.*;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -34,10 +39,19 @@ public class MainActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "qPRNUtumvLXfqseoquhDcoppYAJQgw7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
+        //String userId="";
+       // this.updateDB(userId);
+        //ParseObject testObject = new ParseObject("mayabs");
+       // testObject.put("facebookkkkid", "maya052");
+        //testObject.saveInBackground();
 
 
         // color notification bar
@@ -47,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         // finally change the color
-        window.setStatusBarColor(Color.parseColor("#485678"));
+        //window.setStatusBarColor(Color.parseColor("#485678"));
 
         // action bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -62,6 +76,13 @@ public class MainActivity extends AppCompatActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
+
+    private void updateDB(String id) {
+        ParseObject updateObject = new ParseObject("loginObject");
+        updateObject.put("facebookId", id);
+        updateObject.saveInBackground();
+    }
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -160,6 +181,7 @@ public class MainActivity extends AppCompatActivity
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+
     }
 
 }

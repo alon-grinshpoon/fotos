@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "qPRNUtumvLXfqseoquhDcoppYAJQgw7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
+        Parse.initialize(this, "qPRNUtum7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
         //String userId="";
        // this.updateDB(userId);
         //ParseObject testObject = new ParseObject("mayabs");
@@ -182,9 +182,9 @@ public class MainActivity extends AppCompatActivity
             cards.add(new Card("Herp", "300 years old"));
             cards.add(new Card("Derp", "29 years old"));
             cards.add(new Card("Doge", "2 years old"));
-            RecyclerView cardViewer = (RecyclerView)getActivity().findViewById(R.id.recycler_card_view);
+            RecyclerView cardViewer = (RecyclerView)rootView.findViewById(R.id.recycler_card_view);
             cardViewer.setHasFixedSize(true);
-            cardViewer.setLayoutManager(new LinearLayoutManager(getActivity()));
+            cardViewer.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
             CardViewAdapter adapter = new CardViewAdapter(cards);
             cardViewer.setAdapter(adapter);
 

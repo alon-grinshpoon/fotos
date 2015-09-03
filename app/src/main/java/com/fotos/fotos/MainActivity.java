@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Parse.enableLocalDatastore(this);
+        //Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "qPRNUtum7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
+        //Parse.initialize(this, "qPRNUtum7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
         //String userId="";
        // this.updateDB(userId);
         //ParseObject testObject = new ParseObject("mayabs");
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         // finally change the color
-        //window.setStatusBarColor(Color.parseColor("#485678"));
+        window.setStatusBarColor(Color.parseColor("#485678"));
 
         // action bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -179,9 +179,9 @@ public class MainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            cards.add(new Card("Herp", "300 years old"));
-            cards.add(new Card("Derp", "29 years old"));
-            cards.add(new Card("Doge", "2 years old"));
+
+            cards = initializeCards();
+
             RecyclerView cardViewer = (RecyclerView)rootView.findViewById(R.id.recycler_card_view);
             cardViewer.setHasFixedSize(true);
             cardViewer.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
@@ -196,6 +196,19 @@ public class MainActivity extends AppCompatActivity
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+
+        public List<Card> initializeCards(){
+            List<Card> cards = new ArrayList<>();
+            cards.add(new Card(R.drawable.camp, "Amanda Johnson", "Where was this taken?\n", "Crystal Falls State Forest, Michigan", "Iron Mountain, Michigan", false, "sponsor"));
+            cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
+            cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "FIND A MCDONALD’S NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.selfie, "Karen Williams", "Who else is here with Karen?", "Marc Cohen", "Diana Charleston", false, "sponsor"));
+            cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!", "FIND A STARBUCKS NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.club, "Henry Ruth", "Where was this taken?", "Harvey's Comedy Club, Portland", "Oregon Convention Center, Portland", false, "sponsor"));
+            cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "FIND TICKETS TOO!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.louvre, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor"));
+            return cards;
         }
 
     }

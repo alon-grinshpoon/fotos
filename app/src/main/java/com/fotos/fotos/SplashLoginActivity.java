@@ -38,5 +38,17 @@ public class SplashLoginActivity extends Activity {
 
         LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
         authButton.setReadPermissions(Arrays.asList("user_photos", "user_friends"));
+
+        /* New Handler to start the Menu-Activity
+         * and close this Splash-Screen after some seconds.*/
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+               /* Create an Intent that will start the Menu-Activity. */
+                Intent mainIntent = new Intent(SplashLoginActivity.this,MainActivity.class);
+                SplashLoginActivity.this.startActivity(mainIntent);
+                SplashLoginActivity.this.finish();
+            }
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }

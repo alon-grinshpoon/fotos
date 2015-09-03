@@ -2,8 +2,12 @@ package com.fotos.fotos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+<<<<<<< HEAD
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+=======
+import android.content.Context;
+>>>>>>> c53958d7ef2c7a7616408f0cce862a741cef47e9
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +28,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import android.view.Window;
 import android.view.WindowManager;
+<<<<<<< HEAD
 import android.widget.ImageView;
+=======
+import android.widget.Toast;
+>>>>>>> c53958d7ef2c7a7616408f0cce862a741cef47e9
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -65,6 +73,9 @@ public class MainActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
 
+    // :(
+    private static Context context;
+
     private FacebookData fbAccess = new FacebookData();
     // Holds friend list
     private List<Friend> friendList = null;
@@ -90,6 +101,9 @@ public class MainActivity extends AppCompatActivity
         //ParseObject testObject = new ParseObject("mayabs");
         // testObject.put("facebookkkkid", "maya052");
         //testObject.saveInBackground();
+
+        // :( X 3
+        context = getApplicationContext();
 
 
         // color notification bar
@@ -178,10 +192,12 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        /*
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
@@ -283,6 +299,9 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    String answered_direction = (direction == ItemTouchHelper.LEFT) ? "left" : "right";
+                    Toast.makeText(getCustomAppContext(), String.format("You answered %s, seriously? better luck next time.", answered_direction),
+                            Toast.LENGTH_SHORT).show();
                     adapter.remove(viewHolder.getAdapterPosition());
                     adapter.onDetachedFromRecyclerView(cardViewer);
                 }
@@ -325,19 +344,19 @@ public class MainActivity extends AppCompatActivity
         public List<Card> initializeCards() {
             List<Card> cards = new ArrayList<>();
             cards.add(new Card(R.drawable.camp, "Amanda Johnson", "Where was this taken?", "Crystal Falls State Forest, Michigan", "Iron Mountain, Michigan", false, "sponsor"));
-
-//            Bitmap x = drawable_from_url("https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg");
-
-
-//            cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
-           // cards.add(new Card(x.getGenerationId(), "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
             cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "FIND A MCDONALD’S NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
+            cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "option1", "FIND A MCDONALD’S NEAR YOU!", true, "mcdonalds"));
             cards.add(new Card(R.drawable.selfie, "Karen Williams", "Who else is here with Karen?", "Marc Cohen", "Diana Charleston", false, "sponsor"));
-            cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!", "FIND A STARBUCKS NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!",  "option1","FIND A STARBUCKS NEAR YOU!", true, "starbucks"));
             cards.add(new Card(R.drawable.club, "Henry Ruth", "Where was this taken?", "Harvey's Comedy Club, Portland", "Oregon Convention Center, Portland", false, "sponsor"));
-            cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "FIND TICKETS TOO!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "option1", "FIND TICKETS TOO!", true, "ticketmaster"));
             cards.add(new Card(R.drawable.louvre, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor"));
             return cards;
+        }
+
+        public static Context getCustomAppContext(){
+            return context;
         }
     }
 }

@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity
     // :(
     private static Context context;
 
+    // :( :(
+    private static CardViewAdapter adapter = null;
+
     private FacebookData fbAccess = new FacebookData();
     // Holds friend list
     private List<Friend> friendList = null;
@@ -202,7 +205,6 @@ public class MainActivity extends AppCompatActivity
         // TODO: Finish this !
         Log.d(TAG, "Got Photos !" + friendList.get(0).getUrl());
 
-
         LoadPhotoAsync task = new LoadPhotoAsync();
         task.execute(new String[] { "https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg" });
 
@@ -213,6 +215,10 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... params) {
             Bitmap x = drawable_from_url(params[0]);
+
+            Card card = new Card(x, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor");
+            adapter.add_card(card);
+
             return null;
         }
 
@@ -273,7 +279,7 @@ public class MainActivity extends AppCompatActivity
 
 
             cards = initializeCards();
-            final CardViewAdapter adapter = new CardViewAdapter(cards);
+            adapter = new CardViewAdapter(cards);
             final RecyclerView cardViewer = (RecyclerView) rootView.findViewById(R.id.recycler_card_view);
             cardViewer.setHasFixedSize(true);
             cardViewer.setAdapter(adapter);

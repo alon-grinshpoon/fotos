@@ -75,8 +75,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         // set image
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
-        Bitmap imageBitmap = BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
-                cards.get(i).imageDrawable, options);
+        Bitmap imageBitmap = (cards.get(i).imageBitmap == null) ? BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
+                cards.get(i).imageDrawable, options) : cards.get(i).imageBitmap;
         cardViewHolder.image.setImageBitmap(imageBitmap);
         // set name
         cardViewHolder.name.setText("By " + cards.get(i).name);

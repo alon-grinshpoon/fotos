@@ -9,8 +9,7 @@
     <com.facebook.login.widget.LoginButton
         android:id="@+id/authButton"
         android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="140dp"
-        />
+        android:layout_marginBottom="140dp" />
 </LinearLayout>

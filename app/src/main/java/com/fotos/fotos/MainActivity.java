@@ -2,6 +2,8 @@ package com.fotos.fotos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -34,6 +36,7 @@ import java.util.List;
 import com.fotos.fotos.facebookAccess.FacebookData;
 import com.fotos.fotos.facebookAccess.FacebookDataAsyncResponse;
 import com.fotos.fotos.facebookAccess.Friend;
+import com.fotos.fotos.facebookAccess.Photo;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -65,13 +68,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Parse.enableLocalDatastore(this);
+        //Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "qPRNUtum7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
+        //Parse.initialize(this, "qPRNUtum7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
         //String userId="";
-       // this.updateDB(userId);
+        // this.updateDB(userId);
         //ParseObject testObject = new ParseObject("mayabs");
-       // testObject.put("facebookkkkid", "maya052");
+        // testObject.put("facebookkkkid", "maya052");
         //testObject.saveInBackground();
 
 
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         // finally change the color
-        //window.setStatusBarColor(Color.parseColor("#485678"));
+        window.setStatusBarColor(Color.parseColor("#485678"));
 
         // action bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity
         fbAccess.delegate = this;
 
         fbAccess.GetFriends();
+        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId());
     }
 
     private void updateDB(String id) {
@@ -171,7 +175,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void GetFriendListResponce(List<Friend> friendList) {
         this.friendList = friendList;
+
         Log.d(TAG, "Got Friend list !");
+    }
+
+    @Override
+    public void GetUserPhotosResponse(String id, List<Photo> friendList) {
+        // TODO: Finish this !
+        Log.d(TAG, "Got Photos !" + friendList.get(0).getUrl());
     }
 
     /**
@@ -184,7 +195,7 @@ public class MainActivity extends AppCompatActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private List<Card> cards  = new ArrayList<>();
+        private List<Card> cards = new ArrayList<>();
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -205,14 +216,11 @@ public class MainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            cards.add(new Card("Herp", "300 years old"));
-            cards.add(new Card("Derp", "29 years old"));
-            cards.add(new Card("Doge", "2 years old"));
 
-            final RecyclerView cardViewer = (RecyclerView)rootView.findViewById(R.id.recycler_card_view);
 
+            cards = initializeCards();
             final CardViewAdapter adapter = new CardViewAdapter(cards);
-
+            final RecyclerView cardViewer = (RecyclerView) rootView.findViewById(R.id.recycler_card_view);
             cardViewer.setHasFixedSize(true);
             cardViewer.setAdapter(adapter);
 
@@ -241,7 +249,19 @@ public class MainActivity extends AppCompatActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
 
+        public List<Card> initializeCards() {
+            List<Card> cards = new ArrayList<>();
+            cards.add(new Card(R.drawable.camp, "Amanda Johnson", "Where was this taken?", "Crystal Falls State Forest, Michigan", "Iron Mountain, Michigan", false, "sponsor"));
+            cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
+            cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "FIND A MCDONALD’S NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.selfie, "Karen Williams", "Who else is here with Karen?", "Marc Cohen", "Diana Charleston", false, "sponsor"));
+            cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!", "FIND A STARBUCKS NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.club, "Henry Ruth", "Where was this taken?", "Harvey's Comedy Club, Portland", "Oregon Convention Center, Portland", false, "sponsor"));
+            cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "FIND TICKETS TOO!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.louvre, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor"));
+            return cards;
         }
     }
+}
 
 

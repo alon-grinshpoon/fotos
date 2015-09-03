@@ -2,16 +2,13 @@ package com.fotos.fotos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,18 +18,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.fotos.fotos.cardHandling.Card;
 import com.fotos.fotos.cardHandling.CardViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fotos.fotos.facebookAccess.FacebookData;
+import com.fotos.fotos.facebookAccess.FacebookDataAsyncResponse;
+import com.fotos.fotos.facebookAccess.Friend;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, FacebookDataAsyncResponse {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -43,6 +50,13 @@ public class MainActivity extends AppCompatActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private FacebookData fbAccess = new FacebookData();
+    // Holds friend list
+    private List<Friend> friendList = null;
+
+    // for debug
+    private static final String TAG = "FBLogin";
 
     @SuppressLint("NewApi")
     @Override
@@ -80,6 +94,10 @@ public class MainActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        fbAccess.delegate = this;
+
+        fbAccess.GetFriends();
     }
 
     private void updateDB(String id) {
@@ -148,6 +166,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void GetFriendListResponce(List<Friend> friendList) {
+        this.friendList = friendList;
+        Log.d(TAG, "Got Friend list !");
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -198,6 +222,7 @@ public class MainActivity extends AppCompatActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
 
+        }
     }
-}
+
 

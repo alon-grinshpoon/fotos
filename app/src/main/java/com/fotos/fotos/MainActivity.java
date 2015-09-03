@@ -2,8 +2,10 @@ package com.fotos.fotos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -22,14 +24,21 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.fotos.fotos.cardHandling.Card;
 import com.fotos.fotos.cardHandling.CardViewAdapter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +76,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Init FB SDK, must do this before anything else
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
         setContentView(R.layout.activity_main);
         //Parse.enableLocalDatastore(this);
 
@@ -102,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 
         fbAccess.delegate = this;
 
-        fbAccess.GetFriends();
+        //fbAccess.GetFriends();
         fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId());
     }
 
@@ -183,6 +197,42 @@ public class MainActivity extends AppCompatActivity
     public void GetUserPhotosResponse(String id, List<Photo> friendList) {
         // TODO: Finish this !
         Log.d(TAG, "Got Photos !" + friendList.get(0).getUrl());
+
+
+        LoadPhotoAsync task = new LoadPhotoAsync();
+        task.execute(new String[] { "https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg" });
+
+        //Bitmap x = drawable_from_url("https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg");
+    }
+
+    private class LoadPhotoAsync extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            Bitmap x = drawable_from_url(params[0]);
+            return null;
+        }
+
+        private Bitmap drawable_from_url(String url)  {
+            Bitmap x;
+
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection)new URL(url) .openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            connection.setRequestProperty("User-agent", "Mozilla/4.0");
+
+            InputStream input = null;
+            try {
+                connection.connect();
+                input = connection.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            x = BitmapFactory.decodeStream(input);
+            return x;
+        }
     }
 
     /**
@@ -249,10 +299,38 @@ public class MainActivity extends AppCompatActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
 
+        private Bitmap drawable_from_url(String url)  {
+            Bitmap x;
+
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection)new URL(url) .openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            connection.setRequestProperty("User-agent", "Mozilla/4.0");
+
+            InputStream input = null;
+            try {
+                connection.connect();
+                input = connection.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            x = BitmapFactory.decodeStream(input);
+            return x;
+        }
+
+
         public List<Card> initializeCards() {
             List<Card> cards = new ArrayList<>();
             cards.add(new Card(R.drawable.camp, "Amanda Johnson", "Where was this taken?", "Crystal Falls State Forest, Michigan", "Iron Mountain, Michigan", false, "sponsor"));
-            cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
+
+//            Bitmap x = drawable_from_url("https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg");
+
+
+//            cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
+           // cards.add(new Card(x.getGenerationId(), "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
             cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "FIND A MCDONALD’S NEAR YOU!", "option2", true, "sponsor"));
             cards.add(new Card(R.drawable.selfie, "Karen Williams", "Who else is here with Karen?", "Marc Cohen", "Diana Charleston", false, "sponsor"));
             cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!", "FIND A STARBUCKS NEAR YOU!", "option2", true, "sponsor"));

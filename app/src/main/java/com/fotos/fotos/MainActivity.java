@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,14 +18,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.fotos.fotos.cardHandling.Card;
+import com.fotos.fotos.cardHandling.CardViewAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.parse.Parse;
 import com.parse.ParseObject;
-//import com.Parse.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "qPRNUtumvLXfqseoquhDcoppYAJQgw7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
+        Parse.initialize(this, "qPRNUtum7ZZFN5MN2y", "aKYxLCpcwJiQ4RXOX8kTDG0tUmNvSlvwBC8eBZQo");
         //String userId="";
        // this.updateDB(userId);
         //ParseObject testObject = new ParseObject("mayabs");
@@ -153,6 +158,8 @@ public class MainActivity extends AppCompatActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        private List<Card> cards  = new ArrayList<>();
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -172,6 +179,15 @@ public class MainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            cards.add(new Card("Herp", "300 years old"));
+            cards.add(new Card("Derp", "29 years old"));
+            cards.add(new Card("Doge", "2 years old"));
+            RecyclerView cardViewer = (RecyclerView)rootView.findViewById(R.id.recycler_card_view);
+            cardViewer.setHasFixedSize(true);
+            cardViewer.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+            CardViewAdapter adapter = new CardViewAdapter(cards);
+            cardViewer.setAdapter(adapter);
+
             return rootView;
         }
 
@@ -183,5 +199,5 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
 }
+

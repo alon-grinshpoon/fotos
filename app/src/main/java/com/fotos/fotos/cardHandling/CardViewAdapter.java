@@ -69,7 +69,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
                 cards.get(i).imageDrawable, options);
         cardViewHolder.image.setImageBitmap(imageBitmap);
         // set name
-        cardViewHolder.name.setText(cards.get(i).name);
+        cardViewHolder.name.setText("By " + cards.get(i).name);
         // set question
         cardViewHolder.question.setText(cards.get(i).question);
         // set option1

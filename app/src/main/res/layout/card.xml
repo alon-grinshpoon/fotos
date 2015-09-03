@@ -10,7 +10,7 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="320dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         card_view:cardCornerRadius="1dp"
         android:background="#FAFAFA">
@@ -21,19 +21,30 @@
             android:background="#FAFAFA"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/card_image"
+            <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="150dp"
-                android:background="#FAFAFA"
-                android:layout_alignParentTop="true" />
+                android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/card_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FAFAFA"
-                android:textSize="30sp" />
+                <ImageView
+                    android:id="@+id/card_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:background="#FAFAFA"
+                    android:layout_alignParentTop="true" />
+
+                <TextView
+                    android:id="@+id/card_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/card_image"
+                    android:layout_alignRight="@+id/card_image"
+                    android:layout_alignBottom="@+id/card_image"
+                    android:background="#CC000000"
+                    android:padding="5dp"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/card_question"
@@ -78,7 +89,7 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="15dp"
                 android:background="#FAFAFA">
 
                 <TextView

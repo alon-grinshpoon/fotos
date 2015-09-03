@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity
         // finally change the color
         window.setStatusBarColor(Color.parseColor("#485678"));
 
+        // action bar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.actionbar);
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();

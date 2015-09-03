@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,21 +135,28 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         cardViewHolder.commentFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(v.getContext())
-                        .setTitle("Comment")
-                        .setMessage("Are you sure you want to delete this entry?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                final AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+
+                final EditText edittext= new EditText(v.getContext());
+                alert.setTitle("Comment on foto");
+
+                alert.setView(edittext);
+
+                alert.setPositiveButton("Comment", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String inputText = edittext.getText().toString();
+                        //For now...
+                        Toast.makeText(alert.getContext(), String.format("Comment:\n %s \n Sent", inputText),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                alert.setNegativeButton("Never mind", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
             }
         });
     }

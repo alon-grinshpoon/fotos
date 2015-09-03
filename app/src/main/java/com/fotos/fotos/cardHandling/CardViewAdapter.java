@@ -86,13 +86,35 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         cardViewHolder.question.setText(cards.get(i).question);
         // set option1
         cardViewHolder.option1.setText(cards.get(i).option1);
+        cardViewHolder.option1.setVisibility(!cards.get(i).sponsored ? View.VISIBLE : View.INVISIBLE);
+        ((ImageView)cardViewHolder.cardView.findViewById(R.id.card_arrrow_left)).setVisibility(!cards.get(i).sponsored ? View.VISIBLE : View.INVISIBLE);
         // set option2
         cardViewHolder.option2.setText(cards.get(i).option2);
         // set sponsored
-        //cardViewHolder.sponsored.setText(cards.get(i).sponsored);
+        cardViewHolder.sponsored.setVisibility(cards.get(i).sponsored ? View.VISIBLE : View.INVISIBLE);
         // set sponsor logo
-        //cardViewHolder.sponsorLogo.setImageBitmap(cards.get(i).sponsorLogo);
+        cardViewHolder.sponsorLogo.setVisibility(View.INVISIBLE);
+        if (cards.get(i).sponsored) {
+            BitmapFactory.Options sponsorOptions = new BitmapFactory.Options();
+            options.inScaled = false;
+            Bitmap sponsorImageBitmap = null;
+            if (cards.get(i).sponsorLogo.equals("mcdonalds")){
+                sponsorImageBitmap = BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
+                        R.drawable.logo_mcdonalds, sponsorOptions);
+            } else if (cards.get(i).sponsorLogo.equals("starbucks")){
+                sponsorImageBitmap = BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
+                        R.drawable.logo_starbucks, options);
+            } else if (cards.get(i).sponsorLogo.equals("ticketmaster")){
+                sponsorImageBitmap = BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
+                        R.drawable.logo_ticketmaster, options);
+            }
 
+            if (sponsorImageBitmap != null) {
+                cardViewHolder.sponsorLogo.setImageBitmap(sponsorImageBitmap);
+                cardViewHolder.sponsorLogo.setVisibility(View.VISIBLE);
+            }
+        }
+        // Like/Comment/Share
         cardViewHolder.shareFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

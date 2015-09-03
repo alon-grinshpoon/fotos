@@ -172,10 +172,12 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        /*
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
@@ -264,11 +266,11 @@ public class MainActivity extends AppCompatActivity
             List<Card> cards = new ArrayList<>();
             cards.add(new Card(R.drawable.camp, "Amanda Johnson", "Where was this taken?", "Crystal Falls State Forest, Michigan", "Iron Mountain, Michigan", false, "sponsor"));
             cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
-            cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "FIND A MCDONALD’S NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "option1", "FIND A MCDONALD’S NEAR YOU!", true, "mcdonalds"));
             cards.add(new Card(R.drawable.selfie, "Karen Williams", "Who else is here with Karen?", "Marc Cohen", "Diana Charleston", false, "sponsor"));
-            cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!", "FIND A STARBUCKS NEAR YOU!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.starbucks, "Li Chang", "Li looks awesome in Starbucks at Stanford!",  "option1","FIND A STARBUCKS NEAR YOU!", true, "starbucks"));
             cards.add(new Card(R.drawable.club, "Henry Ruth", "Where was this taken?", "Harvey's Comedy Club, Portland", "Oregon Convention Center, Portland", false, "sponsor"));
-            cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "FIND TICKETS TOO!", "option2", true, "sponsor"));
+            cards.add(new Card(R.drawable.concert, "Marc Cohen", "SO COOL! Marc saw Imagine Dragons LIVE!", "option1", "FIND TICKETS TOO!", true, "ticketmaster"));
             cards.add(new Card(R.drawable.louvre, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor"));
             return cards;
         }

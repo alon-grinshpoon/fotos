@@ -3,6 +3,7 @@ package com.fotos.fotos;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import java.util.List;
 import com.fotos.fotos.facebookAccess.FacebookData;
 import com.fotos.fotos.facebookAccess.FacebookDataAsyncResponse;
 import com.fotos.fotos.facebookAccess.Friend;
+import com.fotos.fotos.facebookAccess.Photo;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         fbAccess.delegate = this;
 
         fbAccess.GetFriends();
+        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId());
     }
 
     private void updateDB(String id) {
@@ -170,7 +173,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void GetFriendListResponce(List<Friend> friendList) {
         this.friendList = friendList;
+
         Log.d(TAG, "Got Friend list !");
+    }
+
+    @Override
+    public void GetUserPhotosResponse(String id, List<Photo> friendList) {
+        // TODO: Finish this !
+        Log.d(TAG, "Got Photos !" + friendList.get(0).getUrl());
     }
 
     /**

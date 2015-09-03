@@ -7,4 +7,6 @@ import java.util.List;
  */
 public interface FacebookDataAsyncResponse {
     void GetFriendListResponce(List<Friend> friendList);
+
+    void GetUserPhotosResponse(String id, List<Photo> friendList);
 }

@@ -1,5 +1,6 @@
 package com.fotos.fotos.facebookAccess;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -38,7 +39,7 @@ public class FacebookData {
                             List<Friend> friendList = new ArrayList<Friend>();
 
                             JSONArray friends = response.getJSONObject().getJSONArray("data");
-                            for (int i=0; i<friends.length(); i++) {
+                            for (int i = 0; i < friends.length(); i++) {
                                 String name = friends.getJSONObject(i).getString("name");
                                 String id = friends.getJSONObject(i).getString("id");
 
@@ -55,5 +56,39 @@ public class FacebookData {
                     }
                 }
         ).executeAsync();
+    }
 
-}}
+        public void GetUserPhotos(final String id) {
+            Bundle parameters = new Bundle();
+            parameters.putString("fields","source,place");
+
+            new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    String.format("/%s/photos", id),
+                    parameters,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            try {
+
+                                List<Photo> photoList = new ArrayList<Photo>();
+
+                                JSONArray friends = response.getJSONObject().getJSONArray("data");
+                                for (int i = 0; i < friends.length(); i++) {
+                                    String id = friends.getJSONObject(i).getString("id");
+                                    String url = friends.getJSONObject(i).getString("source");
+                                    String place = friends.getJSONObject(i).getString("place").toString();
+
+                                    //Log.d("FBLogin", name + id);
+                                    photoList.add(new Photo(id, url, place));
+
+                                    delegate.GetUserPhotosResponse(id, photoList);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            ).executeAsync();
+    }
+}

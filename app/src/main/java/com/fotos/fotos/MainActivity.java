@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -215,13 +217,27 @@ public class MainActivity extends AppCompatActivity
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            cards = initializeCards();
 
-            RecyclerView cardViewer = (RecyclerView) rootView.findViewById(R.id.recycler_card_view);
+            cards = initializeCards();
+            final CardViewAdapter adapter = new CardViewAdapter(cards);
+            final RecyclerView cardViewer = (RecyclerView) rootView.findViewById(R.id.recycler_card_view);
             cardViewer.setHasFixedSize(true);
-            cardViewer.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            CardViewAdapter adapter = new CardViewAdapter(cards);
             cardViewer.setAdapter(adapter);
+
+            cardViewer.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    adapter.remove(viewHolder.getAdapterPosition());
+                    adapter.onDetachedFromRecyclerView(cardViewer);
+                }
+            });
+            itemTouchHelper.attachToRecyclerView(cardViewer);
 
             return rootView;
         }

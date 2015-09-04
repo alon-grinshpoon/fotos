@@ -1,15 +1,22 @@
 package com.fotos.fotos.cardHandling;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,9 +82,44 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         // set image
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
-        Bitmap imageBitmap = (cards.get(i).imageBitmap == null) ? BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
+        final Bitmap imageBitmap = (cards.get(i).imageBitmap == null) ? BitmapFactory.decodeResource(cardViewHolder.cardView.getResources(),
                 cards.get(i).imageDrawable, options) : cards.get(i).imageBitmap;
         cardViewHolder.image.setImageBitmap(imageBitmap);
+        cardViewHolder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Set Preview Dialog
+                final Dialog nagDialog = new Dialog(view.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
+                nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                nagDialog.setCancelable(true);
+                nagDialog.setContentView(R.layout.preview_image);
+                Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
+                ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
+                // rotate image
+                if (view.getResources().getConfiguration().orientation ==  ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth(), imageBitmap.getHeight(), true);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                    // set rotated image as preview
+                    ivPreview.setBackgroundDrawable(new BitmapDrawable(rotatedBitmap));
+                } else {
+                    ivPreview.setBackgroundDrawable(new BitmapDrawable(imageBitmap));
+                }
+
+                View.OnClickListener closeListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View arg0) {
+
+                        nagDialog.dismiss();
+                    }
+                };
+                btnClose.setOnClickListener(closeListener);
+                ivPreview.setOnClickListener(closeListener);
+                nagDialog.show();
+            }
+        });
+
         // set name
         cardViewHolder.name.setText("By " + cards.get(i).name);
         Typeface type = Typeface.createFromAsset(cardViewHolder.cardView.getContext().getAssets(), "fonts/Roboto-Thin.ttf");
@@ -134,21 +176,28 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         cardViewHolder.commentFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(v.getContext())
-                        .setTitle("Comment")
-                        .setMessage("Are you sure you want to delete this entry?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                final AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+
+                final EditText edittext= new EditText(v.getContext());
+                alert.setTitle("Comment on foto");
+
+                alert.setView(edittext);
+
+                alert.setPositiveButton("Comment", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String inputText = edittext.getText().toString();
+                        //For now...
+                        Toast.makeText(alert.getContext(), String.format("Comment:\n %s \n Sent", inputText),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                alert.setNegativeButton("Never mind", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
             }
         });
     }

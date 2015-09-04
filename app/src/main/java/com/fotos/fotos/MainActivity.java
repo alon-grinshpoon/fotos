@@ -293,9 +293,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    String answered_direction = (direction == ItemTouchHelper.LEFT) ? "left" : "right";
-                    Toast.makeText(getCustomAppContext(), String.format("You answered %s, seriously? better luck next time.", answered_direction),
-                            Toast.LENGTH_SHORT).show();
+                    adapter.handleAnswer(direction, getCustomAppContext(), viewHolder);
                     adapter.remove(viewHolder.getAdapterPosition());
                     adapter.onDetachedFromRecyclerView(cardViewer);
                 }

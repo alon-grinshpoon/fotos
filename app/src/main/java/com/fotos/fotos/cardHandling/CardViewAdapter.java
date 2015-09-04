@@ -1,12 +1,14 @@
 package com.fotos.fotos.cardHandling;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         TextView shareFoto;
         TextView likeFoto;
         TextView commentFoto;
+        boolean left_is_correct = false;
+        boolean is_sponsored = false;
 
         CardViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +77,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
 
     @Override
     public void onBindViewHolder(CardViewHolder cardViewHolder, int i) {
+        cardViewHolder.left_is_correct = cards.get(i).left_is_correct;
+        cardViewHolder.is_sponsored = cards.get(i).sponsored;
         // set image
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -95,7 +101,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         cardViewHolder.sponsored.setVisibility(cards.get(i).sponsored ? View.VISIBLE : View.INVISIBLE);
         // set sponsor logo
         cardViewHolder.sponsorLogo.setVisibility(View.INVISIBLE);
-        if (cards.get(i).sponsored) {
+        if (cardViewHolder.is_sponsored) {
             BitmapFactory.Options sponsorOptions = new BitmapFactory.Options();
             options.inScaled = false;
             Bitmap sponsorImageBitmap = null;
@@ -180,5 +186,23 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
     public void add_card(Card card) {
         cards.add(card);
         notifyItemInserted(cards.size() - 1);
+    }
+
+    // Handles swiping answer.
+    public void handleAnswer(int direction, Context context, RecyclerView.ViewHolder viewHolder) {
+        CardViewHolder cardViewHolder = (CardViewAdapter.CardViewHolder)viewHolder;
+        boolean answer = (direction == ItemTouchHelper.LEFT) ? true : false; // boolean for if answered left
+        if (cardViewHolder.is_sponsored == true) {
+            Toast.makeText(context, "Coming soon...",
+                    Toast.LENGTH_SHORT).show();
+        } else if (answer == cardViewHolder.left_is_correct) {
+            Toast.makeText(context, "Correct! +1",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Incorrect, maybe next time",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 }

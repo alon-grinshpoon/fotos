@@ -5,16 +5,24 @@
     android:orientation="vertical"
     android:background="#EEEEEE">
 
-    <ImageView
-        android:id="@+id/drawer_header"
-        android:layout_width="wrap_content"
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:clickable="true"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:layout_gravity="top"
-        android:src="@drawable/drawer_header" />
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/drawer_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_gravity="top"
+            android:src="@drawable/drawer_header" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/drawer_level"

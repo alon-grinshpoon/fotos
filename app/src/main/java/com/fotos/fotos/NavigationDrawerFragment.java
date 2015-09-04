@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -89,25 +91,19 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+
+        View v =  inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        mDrawerListView = ((ListView) v.findViewById(R.id.drawer_list));
+        if(mDrawerListView.getParent()!= null)
+            ((ViewGroup)mDrawerListView.getParent()).removeView(mDrawerListView);
+
+        String color_names[] = {"red", "green", "blue", "yellow", "pink", "brown"};
+        Integer image_id[] = {R.drawable.logo_mcdonalds, R.drawable.logo_mcdonalds, R.drawable.logo_mcdonalds, R.drawable.logo_mcdonalds, R.drawable.logo_mcdonalds, R.drawable.logo_mcdonalds};
+        CustomListAdapter adapter = new CustomListAdapter(getActivity(), image_id, color_names);
+        mDrawerListView.setAdapter(adapter);
+
+        return v;
     }
 
     public boolean isDrawerOpen() {

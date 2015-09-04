@@ -13,6 +13,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -60,6 +61,7 @@ public class SplashLoginActivity extends Activity {
 
                 // Save the access token
                 AccessToken.setCurrentAccessToken(loginResult.getAccessToken());
+                Profile.fetchProfileForCurrentAccessToken();
                 Log.d(TAG, "Button Success");
             }
 

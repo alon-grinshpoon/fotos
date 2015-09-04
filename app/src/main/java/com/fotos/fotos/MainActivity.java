@@ -125,8 +125,9 @@ public class MainActivity extends AppCompatActivity
         fbAccess.delegate = this;
 
         fbAccess.GetFriends();
-       // Profile currentUser = Profile.getCurrentProfile();
-        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId(), "Yoad Atzmoni");
+        Profile currentUser = Profile.getCurrentProfile();
+        String name = (currentUser == null) ? "Yoad Atzmoni" : currentUser.getName();
+        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId(), name);
     }
 
     private void updateDB(String id) {

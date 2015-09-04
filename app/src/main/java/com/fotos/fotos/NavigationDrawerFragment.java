@@ -20,7 +20,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import org.w3c.dom.Text;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

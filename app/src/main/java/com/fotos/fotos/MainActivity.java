@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.StrictMode;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.fotos.fotos.cardHandling.Card;
 import com.fotos.fotos.cardHandling.CardViewAdapter;
 import java.io.IOException;
@@ -121,8 +124,10 @@ public class MainActivity extends AppCompatActivity
 
         fbAccess.delegate = this;
 
-        //fbAccess.GetFriends();
-        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId());
+        fbAccess.GetFriends();
+        Profile currentUser = Profile.getCurrentProfile();
+        String name = (currentUser == null) ? "Yoad Atzmoni" : currentUser.getName();
+        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId(), name);
     }
 
     private void updateDB(String id) {
@@ -197,16 +202,32 @@ public class MainActivity extends AppCompatActivity
     public void GetFriendListResponce(List<Friend> friendList) {
         this.friendList = friendList;
 
+        // Go over list, for each friend get Photos
+        for (int i=0; i<friendList.size(); i++) {
+            fbAccess.GetUserPhotos(friendList.get(i).getId(), friendList.get(i).getName());
+        }
+
+        // Woohoo !
+        SystemClock.sleep(3000);
+
         Log.d(TAG, "Got Friend list !");
     }
 
     @Override
-    public void GetUserPhotosResponse(String id, List<Photo> friendList) {
+    public void GetUserPhotosResponse(String id, String name, List<Photo> friendList) {
         // TODO: Finish this !
-        Log.d(TAG, "Got Photos !" + friendList.get(0).getUrl());
+        Log.d(TAG, "Got Photos !");
 
-        LoadPhotoAsync task = new LoadPhotoAsync();
-        task.execute(new String[] { "https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg" });
+        int picturesSize = (friendList.size() > 2) ? 2 : friendList.size();
+
+        for (int i = 0; i < picturesSize; i++) {
+            LoadPhotoAsync task = new LoadPhotoAsync();
+            task.execute(new String[] { name, friendList.get(i).getUrl(), friendList.get(i).getLocation() });
+        }
+
+
+//        LoadPhotoAsync task = new LoadPhotoAsync();
+//        task.execute(new String[] { name, "https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg" });
 
         //Bitmap x = drawable_from_url("https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg");
     }
@@ -214,9 +235,9 @@ public class MainActivity extends AppCompatActivity
     private class LoadPhotoAsync extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            Bitmap x = drawable_from_url(params[0]);
+            Bitmap x = drawable_from_url(params[1]);
 
-            Card card = new Card(x, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor");
+            Card card = new Card(x, params[0], "Where was this taken?", params[2], false, "sponsor");
             adapter.add_card(card);
 
             return null;
@@ -336,7 +357,6 @@ public class MainActivity extends AppCompatActivity
         public List<Card> initializeCards() {
             List<Card> cards = new ArrayList<>();
             cards.add(new Card(R.drawable.camp, "Amanda Johnson", "Where was this taken?", "Crystal Falls State Forest, Michigan", "Iron Mountain, Michigan", false, "sponsor"));
-            cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "FIND A MCDONALD’S NEAR YOU!", "option2", true, "sponsor"));
             cards.add(new Card(R.drawable.beach, "Marc Cohen", "Where was this taken?", "Whitehaven Beach, Australia", "Fort Lauderdale, Florida", false, "sponsor"));
             cards.add(new Card(R.drawable.mcdonalds, "David Peters", "Check out David and Maya at McDonald’s!", "option1", "FIND A MCDONALD’S NEAR YOU!", true, "mcdonalds"));
             cards.add(new Card(R.drawable.selfie, "Karen Williams", "Who else is here with Karen?", "Marc Cohen", "Diana Charleston", false, "sponsor"));

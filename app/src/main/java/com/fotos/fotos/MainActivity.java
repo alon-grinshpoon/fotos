@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.fotos.fotos.cardHandling.Card;
 import com.fotos.fotos.cardHandling.CardViewAdapter;
 import java.io.IOException;
@@ -121,8 +122,9 @@ public class MainActivity extends AppCompatActivity
 
         fbAccess.delegate = this;
 
-        //fbAccess.GetFriends();
-        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId());
+        fbAccess.GetFriends();
+       // Profile currentUser = Profile.getCurrentProfile();
+        fbAccess.GetUserPhotos(AccessToken.getCurrentAccessToken().getUserId(), "Yoad Atzmoni");
     }
 
     private void updateDB(String id) {
@@ -197,16 +199,29 @@ public class MainActivity extends AppCompatActivity
     public void GetFriendListResponce(List<Friend> friendList) {
         this.friendList = friendList;
 
+        // Go over list, for each friend get Photos
+        for (int i=0; i<friendList.size(); i++) {
+            fbAccess.GetUserPhotos(friendList.get(i).getId(), friendList.get(i).getName());
+        }
+
         Log.d(TAG, "Got Friend list !");
     }
 
     @Override
-    public void GetUserPhotosResponse(String id, List<Photo> friendList) {
+    public void GetUserPhotosResponse(String id, String name, List<Photo> friendList) {
         // TODO: Finish this !
-        Log.d(TAG, "Got Photos !" + friendList.get(0).getUrl());
+        Log.d(TAG, "Got Photos !");
 
-        LoadPhotoAsync task = new LoadPhotoAsync();
-        task.execute(new String[] { "https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg" });
+        int picturesSize = (friendList.size() > 2) ? 2 : friendList.size();
+
+        for (int i = 0; i < picturesSize; i++) {
+            LoadPhotoAsync task = new LoadPhotoAsync();
+            task.execute(new String[] { name, friendList.get(i).getUrl(), friendList.get(i).getLocation() });
+        }
+
+
+//        LoadPhotoAsync task = new LoadPhotoAsync();
+//        task.execute(new String[] { name, "https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg" });
 
         //Bitmap x = drawable_from_url("https://scontent.xx.fbcdn.net/hphotos-xpa1/t31.0-8/s720x720/241039_10152849403198250_6204450900998303748_o.jpg");
     }
@@ -214,9 +229,9 @@ public class MainActivity extends AppCompatActivity
     private class LoadPhotoAsync extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            Bitmap x = drawable_from_url(params[0]);
+            Bitmap x = drawable_from_url(params[1]);
 
-            Card card = new Card(x, "Daniel Silberberg", "Where was this taken?", "The Eiffel Tower, Paris", "The Louvre, Paris", false, "sponsor");
+            Card card = new Card(x, params[0], "Where was this taken?", params[2], "Somewhere else...", false, "sponsor");
             adapter.add_card(card);
 
             return null;

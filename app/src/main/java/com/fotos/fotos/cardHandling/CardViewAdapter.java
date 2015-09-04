@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -166,16 +167,22 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
         cardViewHolder.shareFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "foto shared :)",
-                        Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(v.getContext(), "foto shared!",
+                        Toast.LENGTH_SHORT);
+                TextView tv = (TextView) toast.getView().findViewById(android.R.id.message);
+                tv.setBackgroundColor(0);
+                toast.show();
             }
         });
 
         cardViewHolder.likeFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "foto liked :)",
-                        Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(v.getContext(), "foto liked!",
+                        Toast.LENGTH_SHORT);
+                TextView tv = (TextView) toast.getView().findViewById(android.R.id.message);
+                tv.setBackgroundColor(0);
+                toast.show();
             }
         });
 
@@ -185,6 +192,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.CardVi
                 final AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
 
                 final EditText edittext= new EditText(v.getContext());
+                edittext.setTextColor(Color.WHITE);
                 alert.setTitle("Comment on foto");
 
                 alert.setView(edittext);

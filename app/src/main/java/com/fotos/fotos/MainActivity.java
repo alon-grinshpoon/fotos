@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Woohoo !
-        SystemClock.sleep(3000);
+        // SystemClock.sleep(3000);
 
         Log.d(TAG, "Got Friend list !");
     }

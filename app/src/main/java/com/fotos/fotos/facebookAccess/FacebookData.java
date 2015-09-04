@@ -83,14 +83,14 @@ public class FacebookData {
                                     String place = "";
 
                                     if (friends.getJSONObject(i).has("place")) {
-                                        friends.getJSONObject(i).getJSONObject("place").getString("name");
+                                        place = friends.getJSONObject(i).getJSONObject("place").getString("name").toString();
 
                                         //Log.d("FBLogin", name + id);
                                         photoList.add(new Photo(id, name, url, place));
                                     }
                                 }
 
-                                delegate.GetUserPhotosResponse(id, photoList);
+                                delegate.GetUserPhotosResponse(id, name, photoList);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

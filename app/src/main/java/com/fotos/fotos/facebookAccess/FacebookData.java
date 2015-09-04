@@ -46,8 +46,9 @@ public class FacebookData {
                                 //Log.d("FBLogin", name + id);
                                 friendList.add(new Friend(name, id));
 
-                                delegate.GetFriendListResponce(friendList);
                             }
+
+                            delegate.GetFriendListResponce(friendList);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -58,7 +59,7 @@ public class FacebookData {
         ).executeAsync();
     }
 
-        public void GetUserPhotos(final String id) {
+        public void GetUserPhotos(final String id, final String name) {
             Bundle parameters = new Bundle();
             parameters.putString("fields","source,place");
 
@@ -77,13 +78,19 @@ public class FacebookData {
                                 for (int i = 0; i < friends.length(); i++) {
                                     String id = friends.getJSONObject(i).getString("id");
                                     String url = friends.getJSONObject(i).getString("source");
-                                    String place = friends.getJSONObject(i).getString("place").toString();
+                                    //String place = friends.getJSONObject(i).getString("place").toString();
 
-                                    //Log.d("FBLogin", name + id);
-                                    photoList.add(new Photo(id, url, place));
+                                    String place = "";
 
-                                    delegate.GetUserPhotosResponse(id, photoList);
+                                    if (friends.getJSONObject(i).has("place")) {
+                                        friends.getJSONObject(i).getJSONObject("place").getString("name");
+
+                                        //Log.d("FBLogin", name + id);
+                                        photoList.add(new Photo(id, name, url, place));
+                                    }
                                 }
+
+                                delegate.GetUserPhotosResponse(id, photoList);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

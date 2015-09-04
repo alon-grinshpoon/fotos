@@ -5,11 +5,13 @@ package com.fotos.fotos.facebookAccess;
  */
 public class Photo {
     private String url;
+    private String name;
     private String location;
     private String id;
 
-    public Photo(String id, String url, String location) {
+    public Photo(String id, String name, String url, String location) {
         this.id = id;
+        this.name = name;
         this.url = url;
         this.location = location;
     }
@@ -22,5 +24,10 @@ public class Photo {
 
     public String getId() {
         return this.id;
+    }
+
+
+    public String getName() {
+        return this.name;
     }
 }

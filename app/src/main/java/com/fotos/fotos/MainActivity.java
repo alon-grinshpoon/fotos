@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.StrictMode;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -203,6 +205,9 @@ public class MainActivity extends AppCompatActivity
         for (int i=0; i<friendList.size(); i++) {
             fbAccess.GetUserPhotos(friendList.get(i).getId(), friendList.get(i).getName());
         }
+
+        // Woohoo !
+        SystemClock.sleep(3000);
 
         Log.d(TAG, "Got Friend list !");
     }
